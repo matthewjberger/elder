@@ -54,6 +54,3 @@ jobs:
         run: cargo test --all -- --nocapture
         env:
           RUST_LOG: debug
-
-      - name: Benchmark
-        run: cargo bench

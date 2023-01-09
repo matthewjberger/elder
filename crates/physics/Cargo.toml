@@ -1,0 +1,12 @@
+[package]
+name = "physics"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[dev-dependencies]
+anyhow = "1.0.68"
+ecs = { path = "../ecs" }
+kiss3d = "0.35.0"
+nalgebra = "0.30.1"
