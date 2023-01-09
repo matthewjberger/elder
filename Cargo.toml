@@ -1,0 +1,17 @@
+[package]
+name = "elder"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+default-members = ["apps/*"]
+members = ["apps/*", "crates/*"]
+
+[dependencies]
+app = { path = "crates/app" }
+audio = { path = "crates/audio" }
+config = { path = "crates/config" }
+ecs = { path = "crates/ecs" }
+gui = { path = "crates/gui" }
+render = { path = "crates/render" }
+scene = { path = "crates/scene" }
