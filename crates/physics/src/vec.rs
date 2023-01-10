@@ -118,11 +118,7 @@ impl<const LEN: usize> Vector<Real, { LEN }> {
 	#[must_use]
 	pub fn normalize(&self) -> Self {
 		let length = self.magnitude();
-		if length > 0.0 {
-			*self * length.recip()
-		} else {
-			*self
-		}
+		if length > 0.0 { *self * length.recip() } else { *self }
 	}
 
 	#[must_use]
