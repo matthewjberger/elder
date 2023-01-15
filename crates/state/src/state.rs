@@ -15,19 +15,19 @@ pub trait State<T> {
 		"Unlabeled State".to_string()
 	}
 
-	fn on_start(&mut self, _resources: &mut T) -> StateResult<()> {
+	fn start(&mut self, _resources: &mut T) -> StateResult<()> {
 		Ok(())
 	}
 
-	fn on_stop(&mut self, _resources: &mut T) -> StateResult<()> {
+	fn stop(&mut self, _resources: &mut T) -> StateResult<()> {
 		Ok(())
 	}
 
-	fn on_pause(&mut self, _resources: &mut T) -> StateResult<()> {
+	fn pause(&mut self, _resources: &mut T) -> StateResult<()> {
 		Ok(())
 	}
 
-	fn on_resume(&mut self, _resources: &mut T) -> StateResult<()> {
+	fn resume(&mut self, _resources: &mut T) -> StateResult<()> {
 		Ok(())
 	}
 
@@ -73,7 +73,7 @@ impl<T> StateMachine<T> {
 			return Ok(());
 		}
 		self.running = true;
-		self.active_state_mut()?.on_start(resources)
+		self.active_state_mut()?.start(resources)
 	}
 
 	pub fn update(&mut self, resources: &mut T) -> StateResult<()> {
@@ -106,10 +106,10 @@ impl<T> StateMachine<T> {
 			return Ok(());
 		}
 		if let Some(mut state) = self.states.pop() {
-			state.on_stop(resources)?;
+			state.stop(resources)?;
 		}
 		self.states.push(state);
-		self.active_state_mut()?.on_start(resources)
+		self.active_state_mut()?.start(resources)
 	}
 
 	pub fn push(&mut self, state: Box<dyn State<T>>, resources: &mut T) -> StateResult<()> {
@@ -117,10 +117,10 @@ impl<T> StateMachine<T> {
 			return Ok(());
 		}
 		if let Ok(state) = self.active_state_mut() {
-			state.on_pause(resources)?;
+			state.pause(resources)?;
 		}
 		self.states.push(state);
-		self.active_state_mut()?.on_start(resources)
+		self.active_state_mut()?.start(resources)
 	}
 
 	pub fn pop(&mut self, resources: &mut T) -> StateResult<()> {
@@ -129,11 +129,11 @@ impl<T> StateMachine<T> {
 		}
 
 		if let Some(mut state) = self.states.pop() {
-			state.on_stop(resources)?;
+			state.stop(resources)?;
 		}
 
 		if let Some(state) = self.states.last_mut() {
-			state.on_resume(resources)
+			state.resume(resources)
 		} else {
 			self.running = false;
 			Ok(())
@@ -145,7 +145,7 @@ impl<T> StateMachine<T> {
 			return Ok(());
 		}
 		while let Some(mut state) = self.states.pop() {
-			state.on_stop(resources)?;
+			state.stop(resources)?;
 		}
 		self.running = false;
 		Ok(())
