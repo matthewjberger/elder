@@ -14,5 +14,7 @@ config = { path = "crates/config" }
 ecs = { path = "crates/ecs" }
 graphics = { path = "crates/graphics" }
 gui = { path = "crates/gui" }
+math = { path = "crates/math" }
 physics = { path = "crates/physics" }
 scene = { path = "crates/scene" }
+state = { path = "crates/state" }

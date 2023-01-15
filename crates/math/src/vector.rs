@@ -118,11 +118,7 @@ impl<const LEN: usize> Vector<Real, { LEN }> {
 	#[must_use]
 	pub fn normalize(&self) -> Self {
 		let length = self.magnitude();
-		if length > 0.0 {
-			*self * length.recip()
-		} else {
-			*self
-		}
+		if length > 0.0 { *self * length.recip() } else { *self }
 	}
 
 	#[must_use]
@@ -281,4 +277,3 @@ mod tests {
 		assert_eq!(vector, Vector3::new(3.0, 6.0, -9.0));
 	}
 }
-

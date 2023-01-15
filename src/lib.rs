@@ -4,5 +4,7 @@ pub use config;
 pub use ecs;
 pub use graphics;
 pub use gui;
+pub use math;
 pub use physics;
 pub use scene;
+pub use state;

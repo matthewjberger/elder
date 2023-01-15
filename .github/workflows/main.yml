@@ -1,4 +1,4 @@
-name: Ecs CI
+name: Elder CI
 
 on:
   push:
