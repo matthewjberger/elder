@@ -12,7 +12,7 @@ app = { path = "crates/app" }
 audio = { path = "crates/audio" }
 config = { path = "crates/config" }
 ecs = { path = "crates/ecs" }
+graphics = { path = "crates/graphics" }
 gui = { path = "crates/gui" }
 physics = { path = "crates/physics" }
-render = { path = "crates/render" }
 scene = { path = "crates/scene" }
