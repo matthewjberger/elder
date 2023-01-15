@@ -600,6 +600,7 @@ dependencies = [
  "kiss3d",
  "nalgebra",
  "rand",
+ "thiserror",
 ]
 
 [[package]]

@@ -1,35 +1,11 @@
-use self::error::GenerationError;
 use crate::error::Result;
 use std::ops::{Deref, DerefMut};
+use thiserror::Error;
 
-pub mod error {
-	use super::*;
-
-	#[derive(Debug)]
-	pub struct GenerationError {
-		pub handle: Handle,
-	}
-
-	impl std::error::Error for GenerationError {}
-
-	impl std::fmt::Display for GenerationError {
-		fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-			write!(f, "Entity '{:?}' generation i.", self.handle)
-		}
-	}
-
-	#[derive(Debug)]
-	pub struct HandleNotFoundError {
-		pub handle: Handle,
-	}
-
-	impl std::error::Error for HandleNotFoundError {}
-
-	impl std::fmt::Display for HandleNotFoundError {
-		fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-			write!(f, "Entity '{:?}' does not exist.", self.handle)
-		}
-	}
+#[derive(Error, Debug)]
+pub enum Error {
+	#[error("Handle '{:?}' has an invalid generation.", handle)]
+	Generation { handle: Handle },
 }
 
 pub type SlotVec<T> = Vec<Option<Slot<T>>>;
@@ -70,7 +46,7 @@ impl<T> GenerationalVec<T> {
 		};
 
 		if previous_generation > handle.generation {
-			return Err(Box::new(GenerationError { handle }));
+			return Err(Box::new(Error::Generation { handle }));
 		}
 
 		self.elements[handle.index] = Some(Slot {

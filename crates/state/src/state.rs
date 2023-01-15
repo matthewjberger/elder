@@ -1,31 +1,12 @@
-use self::error::{NoStatesPresent, StateMachineError};
+use thiserror::Error;
 
-pub mod error {
-	#[derive(Debug)]
-	pub enum StateMachineError {
-		NoStatesPresent(NoStatesPresent),
-	}
-
-	impl std::error::Error for StateMachineError {}
-	impl std::fmt::Display for StateMachineError {
-		fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-			match self {
-				StateMachineError::NoStatesPresent(error) => write!(f, "{}", error),
-			}
-		}
-	}
-
-	#[derive(Default, Debug)]
-	pub struct NoStatesPresent;
-	impl std::error::Error for NoStatesPresent {}
-	impl std::fmt::Display for NoStatesPresent {
-		fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-			write!(f, "No states present are present in the state machine.")
-		}
-	}
+#[derive(Error, Debug)]
+pub enum Error {
+	#[error("State machine was started with no states present.")]
+	NoStatesPresent,
 }
 
-type Result<T, E = StateMachineError> = std::result::Result<T, E>;
+type Result<T, E = Error> = std::result::Result<T, E>;
 
 pub type StateResult<T, E = Box<dyn std::error::Error>> = std::result::Result<T, E>;
 
@@ -117,7 +98,7 @@ impl<T> StateMachine<T> {
 	}
 
 	pub fn active_state_mut(&mut self) -> Result<&mut Box<(dyn State<T> + 'static)>> {
-		self.states.last_mut().ok_or(StateMachineError::NoStatesPresent(NoStatesPresent::default()))
+		self.states.last_mut().ok_or(Error::NoStatesPresent)
 	}
 
 	pub fn switch(&mut self, state: Box<dyn State<T>>, resources: &mut T) -> StateResult<()> {

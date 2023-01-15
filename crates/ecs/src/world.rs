@@ -1,7 +1,7 @@
 use crate::{
 	error::Result,
 	resource::ResourceMap,
-	vec::{error::HandleNotFoundError, GenerationalVec, Handle, HandleAllocator, SlotVec},
+	vec::{GenerationalVec, Handle, HandleAllocator, SlotVec},
 };
 use std::{
 	any::TypeId,
@@ -10,6 +10,13 @@ use std::{
 	ops::Deref,
 	rc::Rc,
 };
+use thiserror::Error;
+
+#[derive(Error, Debug)]
+pub enum Error {
+	#[error("Entity '{:?}' does not exist.", entity)]
+	EntityNotFound { entity: Entity },
+}
 
 /*
    Entities:                    Entity 0                       Entity 1   Entity 2                         Entity 3
@@ -180,7 +187,7 @@ impl World {
 
 	fn assign_component<T: 'static>(&mut self, entity: Entity, value: Option<Component>) -> Result<()> {
 		if !self.allocator.handle_exists(&entity) {
-			return Err(Box::new(HandleNotFoundError { handle: entity }) as Box<dyn std::error::Error>);
+			return Err(Box::new(Error::EntityNotFound { entity }));
 		}
 
 		let mut components = self
