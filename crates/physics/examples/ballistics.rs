@@ -7,9 +7,10 @@ use kiss3d::{
 	text::Font,
 	window::Window,
 };
+use math::{Real, Vector3};
 use na::{Point2, Point3, Translation3};
 use nalgebra as na;
-use physics::{Particle, Real, Vector3};
+use physics::Particle;
 use std::{rc::Rc, time::Instant};
 
 #[derive(Default, Debug, Eq, PartialEq, Copy, Clone)]

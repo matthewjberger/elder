@@ -1,4 +1,4 @@
-use crate::{vec::Vector3, Real};
+use math::{Real, Vector3};
 
 #[derive(Debug, Default, Clone, Copy)]
 pub struct Particle {
@@ -75,7 +75,7 @@ impl Particle {
 
 #[cfg(test)]
 mod tests {
-	use crate::assert_equal;
+	use math::assert_equal;
 
 	use super::*;
 
